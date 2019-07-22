@@ -11,14 +11,5 @@ pipeline{
                 }
             }
         }
-        stage("second"){
-            steps{
-                timestamps {
-                    logstash {
-                        echo "hello world 2"
-                    }
-                }
-            }
-        }
     }
 }
