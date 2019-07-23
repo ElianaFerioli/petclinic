@@ -7,7 +7,7 @@ pipeline{
                 sh "curl -d component=org.springframework.samples:spring-petclinic -d metricKeys=ncloc,complexity,violations http://sonar:9000/api/measures/component >> metrics.json"
                 timestamps {
                       logstash{ 
-                       cat metrics.json
+                       sh "cat metrics.json"
                       }
                   
                 }
