@@ -3,9 +3,11 @@ pipeline{
     stages {
         stage("first"){
             steps {
+                sh "curl -d component=org.springframework.samples:spring-petclinic http://sonar:9000/api/components/show > metrics.json"
+                sh "curl -d component=org.springframework.samples:spring-petclinic -d metricKeys=ncloc,complexity,violations >> metrics.json"
                 timestamps {
                       logstash{ 
-                       echo "hello world 1"
+                       cat metrics.json
                       }
                   
                 }
