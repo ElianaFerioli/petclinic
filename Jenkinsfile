@@ -14,7 +14,7 @@ pipeline{
                 customDataMap: null,
                 customPrefix: null,
                 //jenkinsEnvParameterTag: 'KEY=' + env.BUILD_NUMBER,
-                jenkinsEnvParameterField: 'environment=develop',
+                jenkinsEnvParameterField: 'environment=preproduction',
                 measurementName: 'prueba_jenkins',// OPTIONAL, custom fields
                 target: 'prueba_jenkins'])
 		} 
