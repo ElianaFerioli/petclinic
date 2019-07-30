@@ -1,27 +1,22 @@
-node {
-    
-    stage 'Checkout'
-    git "https://github.com/kohsuke/petclinic.git"
-
-    stage 'Build application war file'
-    // Build petclinic in a Maven3+JDK8 Docker container
-    docker.image('maven:3-jdk-8').inside('-v /.m2:/root/.m2') {
-        sh 'mvn -B package -DskipTests'
+pipeline{
+    agent any
+    stages {
+        stage("first"){
+            steps {
+                echo "hola"
+            }
+        }
     }
-
-    stage 'Build application Docker image'
-    def appImg = docker.build("nicolas-deloof/petclinic")
-
-    stage 'Push to GCR'
-    docker.withRegistry('https://gcr.io', 'gcr:nicolas-deloof') {
-        appImg.push();
+    post { 
+		always { 				
+	        step([$class: 'InfluxDbPublisher',
+                customData: null,
+                customDataMap: null,
+                customPrefix: null,
+                //jenkinsEnvParameterTag: 'KEY=' + env.BUILD_NUMBER,
+                jenkinsEnvParameterField: 'environment=develop',
+                measurementName: 'prueba_jenkins',// OPTIONAL, custom fields
+                target: 'prueba_jenkins'])
+		} 
     }
-
-    stage 'Run app on Kubernetes'
-    withKubernetes( serverUrl: 'https://146.148.36.159', credentialsId: 'kubeadmin' ) {
-          sh 'kubectl run petclinic --image=gcr.io/nicolas-deloof/petclinic --port=8080'
-    }
-
-    // ... Do some tests on deployed application web UI
-
 }
