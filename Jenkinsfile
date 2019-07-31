@@ -1,5 +1,9 @@
 pipeline{
     agent any
+	libraries {
+  lib('test@master')
+}
+
     stages {
         stage("first"){
             steps {
